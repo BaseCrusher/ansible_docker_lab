@@ -1,0 +1,82 @@
+services:
+  admin:
+    container_name: admin
+    hostname: ansible
+    image: ansible_admin
+    environment:
+      - PASSWORD=ansible
+    volumes:
+      - "./ansible_conf:/ansible"
+    ports:
+      - "2022:22"
+    networks:
+      ansible_net:
+        ipv4_address: 10.0.0.6
+
+  web01:
+    container_name: web01
+    hostname: web01
+    image: ansible_node
+    environment:
+      - USER=ansible_user
+      - GROUP=ansible_group
+      - PASSWORD=ansible
+      - REQUIERE_SUDO_PASS=FALSE
+    networks:
+      ansible_net:
+        ipv4_address: 10.0.0.2
+
+  web02:
+    container_name: web02
+    hostname: web02
+    image: ansible_node
+    environment:
+      - USER=ansible_user
+      - GROUP=ansible_group
+      - PASSWORD=ansible
+      - REQUIERE_SUDO_PASS=FALSE
+    networks:
+      ansible_net:
+        ipv4_address: 10.0.0.3
+
+  db01:
+    container_name: db01
+    hostname: db01
+    image: ansible_node
+    environment:
+      - USER=ansible_user
+      - GROUP=ansible_group
+      - PASSWORD=ansible
+      - REQUIERE_SUDO_PASS=FALSE
+      - POSTGRES_USER=db_1
+      - POSTGRES_PASSWORD=db_1
+    tmpfs:
+      - "/var/lib/postgresql/data"
+    networks:
+      ansible_net:
+        ipv4_address: 10.0.0.4
+  
+  db02:
+    container_name: db02
+    hostname: web02
+    image: ansible_node
+    environment:
+      - USER=ansible_user
+      - GROUP=ansible_group
+      - PASSWORD=ansible
+      - REQUIERE_SUDO_PASS=FALSE
+      - POSTGRES_USER=db_2
+      - POSTGRES_PASSWORD=db_2
+    tmpfs:
+      - "/var/lib/postgresql/data"
+    networks:
+      ansible_net:
+        ipv4_address: 10.0.0.5
+
+networks:
+  ansible_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.0.0/16
+          gateway: 10.0.0.1
