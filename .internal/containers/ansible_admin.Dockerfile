@@ -3,7 +3,8 @@ COPY ./.internal/files/ssh/ansible_ssh /home/ansible/.ssh/ansible_ssh
 COPY ./.internal/files/scripts/ansible_startup.sh /opt/ansible_startup.sh
 RUN apt-get update && \
     apt-get upgrade -y && \
-    apt-get install -y openssh-client openssh-server sshpass python3 python3-pip sudo && \
+    apt-get install -y openssh-client openssh-server sshpass python3 python3-pip vim sudo && \
+    ln -s /bin/vim /bin/vi && \
     pip install ansible && \
     groupadd ansible && useradd -ms /bin/bash -g ansible ansible && \
     usermod -aG sudo ansible && \
