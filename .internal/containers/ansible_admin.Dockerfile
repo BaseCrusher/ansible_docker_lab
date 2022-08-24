@@ -14,7 +14,7 @@ RUN apt-get update && \
     chown ansible:ansible /ansible && \
     echo "cd /ansible" >> /home/ansible/.profile && \
     echo "eval \$(ssh-agent -s) >> /dev/null" >> /home/ansible/.profile  && \
-    echo "ssh-add /home/ansible/.ssh/ansible_ssh >> /dev/null" >> /home/ansible/.profile && \
+    echo "ssh-add /home/ansible/.ssh/ansible_ssh 2> /dev/null" >> /home/ansible/.profile && \
     chown ansible:ansible /home/ansible/.profile && \
     chmod +x /opt/ansible_startup.sh
 
