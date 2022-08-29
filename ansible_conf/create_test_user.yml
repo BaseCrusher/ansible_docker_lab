@@ -1,0 +1,48 @@
+- name: Create test user
+  hosts: all
+  vars:
+    tail: "tail -n 3"
+  become: yes
+  tasks:
+    - name: Load secrets
+      include_vars:
+        file: secrets
+
+    - name: create users
+      user:
+        name: "{{ item['username'] }}"
+        password: "{{ item['password'] }}"
+        state: present
+      loop: "{{ users }}"
+      when: "'webs' in group_names"
+
+    - name: print users dir
+      shell: "{{ tail }} /etc/passwd"
+      register: command_output_tail1
+      when: "'webs' in group_names"
+
+    - debug:
+        var: command_output_tail1.stdout_lines
+
+    - name: delete user
+      user:
+        name: "{{ item['username'] }}"
+        state: absent
+      loop: "{{ users }}"
+      when: "'webs' in group_names"
+    
+    - name: print users dir
+      shell: "{{ tail }} /etc/passwd"
+      register: command_output_tail2
+      when: "'webs' in group_names"
+      
+    - debug:
+        var: command_output_tail2.stdout_lines
+
+    - name: Change motd
+      template: 
+        src: motd.j2
+        dest: /etc/motd
+        owner: root
+        group: root
+        mode: "0644"

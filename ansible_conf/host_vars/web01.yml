@@ -1,0 +1,10 @@
+users:
+  - user1:
+    username: web01_1
+    password: "{{ secret_password }}"
+  - user2:
+    username: web01_2
+    password: "{{ secret_password }}"
+  - user3:
+    username: web01_3
+    password: "{{ secret_password }}"
