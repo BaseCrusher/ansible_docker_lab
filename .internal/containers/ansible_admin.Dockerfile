@@ -6,6 +6,7 @@ RUN apt-get update && \
     apt-get install -y openssh-client openssh-server sshpass python3 python3-pip vim sudo && \
     ln -s /bin/vim /bin/vi && \
     pip install ansible && \
+    pip install ansible-lint && \
     groupadd ansible && useradd -ms /bin/bash -g ansible ansible && \
     usermod -aG sudo ansible && \
     echo "Host *" > "/home/ansible/.ssh/config" && \
